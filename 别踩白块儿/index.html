@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<title></title>
+	<style>
+		#main {
+			width: 360px;
+			height: 360px;
+			background: white;
+			border: 2px solid green;
+			margin: 0 auto;
+			position: relative;
+			overflow: hidden;
+		}
+
+		#container {
+			width: 100%;
+			height: 360px;
+			position: relative;
+			top: -90px;
+			background: white;
+		}
+
+		.row {
+			width: 100%;
+			height: 90px;
+		}
+
+		.cell {
+			width: 90px;
+			height: 90px;
+			float: left;
+		}
+
+		.black {
+			background: black;
+		}
+
+		#score {
+			text-align: center;
+		}
+	</style>
+</head>
+
+<body>
+	<h1 id="score">0</h1>
+	<div id="main">
+		<div id="container"></div>
+	</div>
+</body>
+<script>
+	var clock = null;
+	var state = 0;//0初始化状态 ，1进行中，2暂停，3失败
+	var speed = 2;
+	function init() {
+		for (var i = 0; i < 4; i++) {
+			crow();
+		}
+		$('main').onclick = function (ev) {
+			judge(ev);
+		}
+	}
+	//点击事件的判断    
+	function judge(ev) {
+		if (state == 3) {
+			alert("失败者禁止入内");
+			return;
+		}
+		if (ev.target.className.indexOf('black') == -1) {
+			//              	clearInterval(clock);
+			//                  state = 3;
+			//                  alert("结束");
+			over();
+		}
+		else {
+			ev.target.className = 'cell';
+			ev.target.parentNode.pass = 1;
+			score();
+		}
+	}
+	//start()启动
+	function start() {
+		clock = window.setInterval('move()', 30);
+	}
+	//动画
+	function move() {
+		var con = $('container');
+		var top = parseInt(window.getComputedStyle(con, null)['top']);
+		if (speed + top > 0)
+			top = 0;
+		else {
+			top += speed;//调节下降速度
+			con.style.top = top + 'px';
+		}
+		if (top == 0) {
+			crow();
+			con.style.top = '-90px';
+			drow();
+		}
+		else if (top == (speed - 90)) {
+			var rows = con.childNodes;
+			if ((rows.length == 5) && (rows[4].pass !== 1)) {
+				//	             	clearInterval(clock);
+				//                  state = 3;
+				//                  alert("游戏结束 ，你的成绩是"+$('score').innerHTML);		
+				over();
+			}
+		}
+	}
+	//结束
+	function over() {
+		clearInterval(clock);
+		state = 3;
+		var mes = confirm("你的成绩是" + $('score').innerHTML + "\n是否重新开始游戏？");
+		if (mes == true) {
+			window.location.reload();
+		}
+		else {
+			window.close();
+		}
+	}
+	//加速
+	function jiasu() {
+		speed += 2;
+		if (speed == 20) {
+			alert("你的电脑太卡了！");
+		}
+	}
+	//计分
+	function score() {
+		var newscore = parseInt($('score').innerHTML) + 1;
+		$('score').innerHTML = newscore;
+		if (newscore % 10 == 0) {
+			jiasu();
+		}
+	}
+	//创建div.row 
+	function crow() {
+		var con = $('container');
+		var row = cdiv('row');
+		var classes = createsn();
+		for (var i = 0; i < 4; i++) {
+			row.appendChild(cdiv(classes[i]));
+		}
+		if (con.firstChild == null) {
+			con.appendChild(row);
+		}
+		else {
+			con.insertBefore(row, con.firstChild);
+		}
+	}
+	//删除最后一行
+	function drow() {
+		var con = $('container');
+		if (con.childNodes.length == 6)
+			con.removeChild(con.lastChild);
+	}
+	//创建div,className是其类名
+	function cdiv(className) {
+		var div = document.createElement('div');
+		div.className = className;
+		return div;
+	}
+	//返回一个数组，随机其中一个单元格，值为‘cell black’,其余为cell
+	function createsn() {
+		var arr = ['cell', 'cell', 'cell', 'cell'];
+		var i = Math.floor(Math.random() * 4);
+		arr[i] = 'cell black';
+		return arr;
+	}
+	//ById
+	function $(id) {
+		return document.getElementById(id);
+	}
+	init();
+	start();
+</script>
+
+</html>

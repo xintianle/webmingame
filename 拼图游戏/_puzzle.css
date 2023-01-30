@@ -1,0 +1,122 @@
+/*给所有的元素去掉默认样式*/
+*{
+	padding:0;
+	margin:0;
+	border:0;
+}
+/*给body设置100%高宽，可以根据浏览器屏幕大小自动适配*/
+body{
+	width:100%;
+	height:100%;
+}
+/*给container设置属性，大小至少要能容纳里面所包含的所有元素*/
+#container{
+	position:relative;
+	width:620px;
+	height:420px;
+	margin:0 auto;
+	margin-top:100px;
+	border-radius:1px;
+}
+/*游戏区div，大小根据小div计算，因为下面设置小方块大小为150*150
+，所以这个大小为150*3=450px*/
+#game{
+	position:absolute;
+	width:450px;
+	height:450px;
+	border-radius:5px;
+	display:inline-block;
+	background-color:#ffe171;
+	box-shadow:0px 0px 10px #ffe171;
+}
+/*设置小方块大小，定位为绝对定位，这样改变位置不会影响其他元素
+的位置，，宽高149px+(box-shadow:1px 1px 2px #777)*/
+#game div{
+	position:absolute;
+	width:148px;
+	height:148px;
+	box-shadow:1px 1px 2px #777;
+	background-color:green;
+	color:white;
+	text-align:center;
+	font-size:150px;
+	line-height:150px;
+	cursor:pointer;/*鼠标移动到元素上时显示不同样式，pointer为手指*/
+	-webkit-transition:0.3s;/*浏览器前缀，兼容chrome，当改变方块
+	位置时，会有一个动画，*/
+}
+/*给方块设置鼠标悬停动画*/
+#game div :hover{
+	color:#ffe171;
+}
+/*设置控制区样式*/
+#control{
+	width:150px;
+	height:450px;
+	display:inline-block;/*会让元素呈现块状元素的特性，使得可以改变
+	大小，同时也会具备行内元素的特性，使得不会占据一行空间*/
+	float:right;
+}
+/*设置控制区按钮的共同样式*/
+#control span{
+	height:25px;
+	font-size:20px;
+	color:#222;
+	margin-top:10px;
+}
+/*给start按钮设置属性*/
+#start{
+	display:inline-block;
+	font-size:28px;
+	width:100px;
+	height:28px;
+	background-color:#20a6fa;
+	color:#ffe171;
+	text-shadow:1px 1px 2px #ffe171;
+	border-radius:5px;
+	box-shadow:2px 2px 5px #4c98f5;
+	text-align:center;
+	cursor:pointer;
+}
+/*给reset按钮设置属性*/
+#reset{
+	display:inline-block;
+	font-size:28px;
+	width:100px;
+	height:28px;
+	background-color:#20a6fa;
+	color:#ffe171;
+	text-shadow:1px 1px 2px #ffe171;
+	border-radius:5px;
+	box-shadow:2px 2px 5px #4c98f5;
+	text-align:center;
+	cursor:pointer;
+}
+/*预先给每个小方块按照顺序排好位置*/
+#d1{
+	left:0px;
+}
+#d2{
+	left:150px;
+}
+#d3{
+	left:300px;
+}
+#d4{
+	top:150px;
+}
+#d5{
+	top:150px;
+	left:150px;
+}
+#d6{
+	top:150px;
+	left:300px;
+}
+#d7{
+	top:300px;
+}
+#d8{
+	top:300px;
+	left:150px;
+}
